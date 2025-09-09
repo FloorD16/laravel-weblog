@@ -24,11 +24,11 @@
 
     <br>
 
-    <form action="" method="POST">
+    <form action="{{ route('comments.store', $post->id) }}" method="POST">
         @csrf
         <label for="body">Reactie:</label>
         <textarea id="body" name="body" required></textarea>
-        <br>
+        <br><br>
         <button type="submit">Plaats reactie</button>
     </form>
 

@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCommentRequest;
-
 use Illuminate\Http\Request;
-use App\Models\Comment;
+use App\Models\Post;
 
-class CommentController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,20 +26,9 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCommentRequest $request, string $id)
+    public function store(Request $request)
     {
-        // Haalt de gevalideerde gegevens op uit de StoreCommentRequest class
-        $validated = $request->validated();
-
-        $comment = new Comment();
-
-        // Stelt de 'body' waarde in op de gevalideerde gegevens
-        $comment->body = $validated['body'];
-        $comment->post_id = $id;
-        
-        $comment->save();
-
-        return redirect()->route('posts.show', $id);
+        //
     }
 
     /**
@@ -49,7 +36,9 @@ class CommentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $posts = Post::where('user_id', $id)->get();
+        
+        return view('user.show', compact('posts'));
     }
 
     /**

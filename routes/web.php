@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -12,7 +15,12 @@ Route::get('/posts/create', [PostController::class, 'create'])->name('posts.crea
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
 
-Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::post('/posts/{id}', [CommentController::class, 'store'])->name('comments.store');
 
-// We voegen ook een redirect toe aan de routes die de hoofdpagina doorverwijst naar de '/items' route
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'authenticate'])->name('login.auth');
+
+Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show')->middleware('auth');
+
+// We voegen ook een redirect toe aan de routes die de hoofdpagina doorverwijst naar de '/posts' route
 Route::redirect('/', '/posts');
