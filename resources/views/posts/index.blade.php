@@ -16,7 +16,7 @@
         </thead>
         <tbody>
             @foreach($posts as $post)
-                <tr onclick="window.location='{{ route('posts.show', $post->id) }}'" class="hover:bg-gray-100 cursor-pointer"
+                <tr onclick="" class="hover:bg-gray-100 cursor-pointer"
                     style="cursor: pointer;" onmouseover="this.style.color='#1b74bdff';" onmouseout="this.style.color='#000000ff';">
                     <td>{{ $post->title }}</td>
                     <td>{{ $post->body }}</td>

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LoginController;
@@ -20,7 +22,15 @@ Route::post('/posts/{id}', [CommentController::class, 'store'])->name('comments.
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('login.auth');
 
-Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show')->middleware('auth');
+Route::get('/user/{user_id}', [UserController::class, 'index'])->name('user.index')->middleware('auth');
+Route::get('/user/{user_id}/edit/{post_id}', [UserController::class, 'edit'])->name('user.edit')->middleware('auth');
+Route::put('/user/{user_id}/{post_id}', [UserController::class, 'update'])->name('user.update')->middleware('auth');
+
+Route::post('/logout', function () {
+    Auth::logout();
+
+    return redirect('/posts');
+})->name('logout');
 
 // We voegen ook een redirect toe aan de routes die de hoofdpagina doorverwijst naar de '/posts' route
 Route::redirect('/', '/posts');
