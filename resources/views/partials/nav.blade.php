@@ -7,15 +7,9 @@
             <li>
                 <a href="{{ route('user.index', ['user_id' => Auth::id()]) }}">Mijn artikelen</a>
             </li>
-        @endauth
-
-        @guest
             <li>
-                <a href="{{ route('login') }}">Inloggen</a>
+                <a href="{{ route('category.create') }}">Nieuwe categorie toevoegen</a>
             </li>
-        @endguest
-
-        @auth
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -23,6 +17,12 @@
                 </form>
             </li>
         @endauth
+
+        @guest
+            <li>
+                <a href="{{ route('login') }}">Inloggen</a>
+            </li>
+        @endguest
 
     </ul>
 </nav>

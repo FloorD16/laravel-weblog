@@ -13,6 +13,13 @@
         <label for="body">Tekst:</label>
         <textarea id="body" name="body" required></textarea>
         <br>
+        <label for="categories">Kies categorieën:</label>
+        <select id="categories" name="categories[]" multiple>
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
+        <br>
         <button type="submit">Opslaan</button>
     </form>
 @endsection

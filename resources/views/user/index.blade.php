@@ -12,7 +12,7 @@
                 <th>Titel</th>
                 <th></th>
                 <th>Plaatsingsdatum</th>
-                <th>Acties</th>
+                <th colspan=2>Acties</th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +23,13 @@
                     <td>{{ $post->body }}</td>
                     <td>{{ $post->created_at }}</td>
                     <td><a href="{{ route('user.edit', ['user_id' => $user_id, 'post_id' => $post->id]) }}">Bewerken</a></td>
+                    <td>
+                        <form action="{{ route('user.destroy', ['user_id' => $user_id, 'post' => $post->id]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Weet je zeker dat je deze post wilt verwijderen?')">Verwijderen</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

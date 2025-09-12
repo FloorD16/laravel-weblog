@@ -6,6 +6,7 @@ use App\Http\Requests\UpdatePostRequest;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Category;
 
 class UserController extends Controller
 {
@@ -49,14 +50,15 @@ class UserController extends Controller
     public function edit(string $user_id, string $post_id)
     {
         $post = Post::find($post_id);
+        $categories = Category::All();
 
-        return view('user.edit', compact('post', 'user_id'));
+        return view('user.edit', compact('post', 'user_id', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, $user_id, Post $post)
+    public function update(UpdatePostRequest $request, string $user_id, Post $post)
     {
         // Valideert de inkomende gegevens
         $validated = $request->validated();
@@ -64,14 +66,18 @@ class UserController extends Controller
         // Werkt het item bij met de gevalideerde gegevens
         $post->update($validated);
 
+        $post->categories()->sync($validated['categories']);
+
         return redirect()->route('user.index', ['user_id' => $user_id]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $user_id, Post $post)
     {
-        //
+        $post->delete();
+        
+        return redirect()->route('user.index', ['user_id' => $user_id]);
     }
 }

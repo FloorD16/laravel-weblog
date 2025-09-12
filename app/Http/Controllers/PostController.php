@@ -7,6 +7,7 @@ use App\Http\Requests\StorePostRequest;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Category;
 
 class PostController extends Controller
 {
@@ -16,7 +17,25 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('created_at', 'desc')->get();
-        return view('posts.index', compact('posts'));
+        $categories = Category::All();
+
+        return view('posts.index', compact('posts', 'categories'));
+    }
+
+    public function filter(Request $request)
+    {
+        $query = Post::query();
+
+        if ($request->filled('category_ids')) {
+            $query->whereHas('categories', function ($q) use ($request) {
+                $q->whereIn('categories.id', $request->category_ids);
+            });
+        }
+
+        $posts = $query->latest()->paginate(10);
+        $categories = Category::all();
+
+        return view('posts.index', compact('posts', 'categories'));
     }
 
     /**
@@ -24,7 +43,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $categories = Category::All();
+
+        return view('posts.create', compact('categories'));
     }
 
     /**
@@ -42,6 +63,8 @@ class PostController extends Controller
         $post->body = $validated['body'];
         
         $post->save();
+
+        $post->categories()->sync($validated['categories']);
 
         return redirect()->route('posts.index');
     }
