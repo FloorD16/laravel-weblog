@@ -63,6 +63,10 @@ class UserController extends Controller
         // Valideert de inkomende gegevens
         $validated = $request->validated();
         
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('images', 'public');
+        }
+
         // Werkt het item bij met de gevalideerde gegevens
         $post->update($validated);
 

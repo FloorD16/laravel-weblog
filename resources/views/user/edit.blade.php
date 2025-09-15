@@ -5,7 +5,7 @@
 @section('content')
     <h1>Artikel Bewerken</h1>
 
-    <form action="{{ route('user.update', ['user_id' => $user_id, 'post' => $post->id]) }}" method="POST">
+    <form action="{{ route('user.update', ['user_id' => $user_id, 'post' => $post->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <label for="title">Titel:</label>
@@ -14,6 +14,17 @@
         <label for="body">Tekst:</label>
         <textarea id="body" name="body" required>{{ $post->body }}</textarea>
         <br>
+        <label for="image">Afbeelding toevoegen:</label>
+        <input type="file" id="image" name="image">
+        <br>
+
+        @if ($post->image)
+            <div style="margin-top: 10px;">
+                <p>Huidige afbeelding:</p>
+                <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" style="max-width: 200px;">
+            </div>
+        @endif
+
         <label for="categories">Kies categorieën:</label>
         <select id="categories" name="categories[]" multiple>
             @foreach ($categories as $category)

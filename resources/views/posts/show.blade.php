@@ -10,6 +10,11 @@
 
     <p>{{ $post->body }}</p>
 
+    @if($post->image)
+        <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image">
+    @endif
+
+
     <h3>Reacties</h3>
 
     <table>

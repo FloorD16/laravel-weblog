@@ -10,6 +10,10 @@
             <li>
                 <a href="{{ route('category.create') }}">Nieuwe categorie toevoegen</a>
             </li>
+            @if(Auth::is_premium() === 0)
+                <li>
+
+                </li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

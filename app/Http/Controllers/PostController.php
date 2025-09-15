@@ -14,25 +14,18 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $posts = Post::orderBy('created_at', 'desc')->get();
-        $categories = Category::All();
 
-        return view('posts.index', compact('posts', 'categories'));
-    }
-
-    public function filter(Request $request)
+    public function index(Request $request)
     {
         $query = Post::query();
 
-        if ($request->filled('category_ids')) {
+        if ($request->filled('categories')) {
             $query->whereHas('categories', function ($q) use ($request) {
-                $q->whereIn('categories.id', $request->category_ids);
+                $q->whereIn('categories.id', $request->categories);
             });
         }
 
-        $posts = $query->latest()->paginate(10);
+        $posts = $query->latest()->paginate(10)->withQueryString();
         $categories = Category::all();
 
         return view('posts.index', compact('posts', 'categories'));
@@ -61,7 +54,8 @@ class PostController extends Controller
         // Stelt de 'title' and 'body' waarden in op de gevalideerde gegevens
         $post->title = $validated['title'];
         $post->body = $validated['body'];
-        
+        $post->image = $request->hasFile('image') ? $request->file('image')->store('images', 'public') : "";
+
         $post->save();
 
         $post->categories()->sync($validated['categories']);
@@ -74,7 +68,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::find($id);
+        $post = Post::findOrFail($id);
 
         $comments = Comment::where('post_id', $id)->get();
 
