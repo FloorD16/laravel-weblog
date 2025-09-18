@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdatePostRequest;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Category;
+
 
 class UserController extends Controller
 {
@@ -64,8 +68,26 @@ class UserController extends Controller
         $validated = $request->validated();
         
         if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image);
+            }
+
+            // Store the new image
             $validated['image'] = $request->file('image')->store('images', 'public');
-        }
+        
+        } else {
+            // Delete the old image if no new one is uploaded
+            if ($post->image) {
+                Storage::disk('public')->delete($post->image);
+            }
+
+    $validated['image'] = null;
+}
+
+
+
+        $validated['is_premium'] = $request->has('premium') ? 1 : 0;
 
         // Werkt het item bij met de gevalideerde gegevens
         $post->update($validated);
@@ -83,5 +105,14 @@ class UserController extends Controller
         $post->delete();
         
         return redirect()->route('user.index', ['user_id' => $user_id]);
+    }
+    
+    public function upgrade(string $user_id)
+    {
+        $user = Auth::user();
+        $user->is_premium = 1;
+        $user->save();
+
+        return redirect()->back();
     }
 }

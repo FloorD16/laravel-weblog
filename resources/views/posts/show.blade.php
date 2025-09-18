@@ -7,6 +7,7 @@
     <h1>{{ $post->title }}</h1>
 
     <h5>Geplaatst op {{ $post->created_at }}, geüpdatet op {{ $post->updated_at }}</h5>
+    <h5>Door {{ $post->user->username }}</h5>
 
     <p>{{ $post->body }}</p>
 

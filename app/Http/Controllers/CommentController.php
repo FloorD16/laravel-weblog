@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
@@ -38,6 +39,7 @@ class CommentController extends Controller
         // Stelt de 'body' waarde in op de gevalideerde gegevens
         $comment->body = $validated['body'];
         $comment->post_id = $id;
+        $comment->user_id = Auth::id() ?? 1;
         
         $comment->save();
 

@@ -23,6 +23,9 @@
             @endforeach
         </select>
         <br>
+        <label for="premium">Markeer als premium</label>
+        <input type="checkbox" id="premium" name="premium" value=1>
+        <br>
         <button type="submit">Opslaan</button>
     </form>
 @endsection

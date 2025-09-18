@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
@@ -48,13 +49,15 @@ class PostController extends Controller
     {
         // Haalt de gevalideerde gegevens op uit de StorePostRequest class
         $validated = $request->validated();
-
+        
         $post = new Post();
 
         // Stelt de 'title' and 'body' waarden in op de gevalideerde gegevens
         $post->title = $validated['title'];
         $post->body = $validated['body'];
         $post->image = $request->hasFile('image') ? $request->file('image')->store('images', 'public') : "";
+        $post->is_premium = $validated['premium'] ?? 0;
+        $post->user_id = Auth::id() ?? 1;
 
         $post->save();
 
@@ -97,5 +100,13 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function premium()
+    {
+        $posts = Post::where('is_premium', 1)->latest()->paginate(10);
+        $categories = Category::all();
+
+        return view('posts.index', compact('posts', 'categories'));
     }
 }

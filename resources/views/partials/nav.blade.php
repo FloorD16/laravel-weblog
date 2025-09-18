@@ -10,10 +10,19 @@
             <li>
                 <a href="{{ route('category.create') }}">Nieuwe categorie toevoegen</a>
             </li>
-            @if(Auth::is_premium() === 0)
+            @if(Auth::user()['is_premium'] === 0)
                 <li>
-
+                    <form action="{{ route('user.upgrade', ['user_id' => Auth::id()]) }}" method="POST">
+                        @csrf
+                        <button type="submit">Wordt premium lid</button>
+                    </form>
                 </li>
+            @endif
+            @if(Auth::user()['is_premium'] === 1)
+                <li>
+                    <a href="{{ route('posts.premium') }}">Premium artikelen</a>
+                </li>
+            @endif
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf

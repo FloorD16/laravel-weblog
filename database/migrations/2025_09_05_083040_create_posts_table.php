@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('body');
             $table->string('image')->nullable();
             $table->boolean('is_premium');
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->default(1);
             $table->timestamps();
         });
     }

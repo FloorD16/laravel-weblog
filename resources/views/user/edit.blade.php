@@ -34,6 +34,9 @@
             @endforeach
         </select>
         <br>
+        <label for="premium">Markeer als premium</label>
+        <input type="checkbox" id="premium" name="premium" value=1 {{ $post->is_premium === 1 ? 'checked' : '' }}>
+        <br>
         <button type="submit">Opslaan</button>
     </form>
 @endsection

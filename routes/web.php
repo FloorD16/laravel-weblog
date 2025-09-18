@@ -15,6 +15,7 @@ Route::get('/', function () {
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::get('/posts/premium', [PostController::class, 'premium'])->name('posts.premium')->middleware('auth');
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
 
@@ -33,6 +34,7 @@ Route::get('/user/{user_id}', [UserController::class, 'index'])->name('user.inde
 Route::get('/user/{user_id}/edit/{post_id}', [UserController::class, 'edit'])->name('user.edit')->middleware('auth');
 Route::put('/user/{user_id}/{post}', [UserController::class, 'update'])->name('user.update')->middleware('auth');
 Route::delete('/user/{user_id}/{post}', [UserController::class, 'destroy'])->name('user.destroy')->middleware('auth');
+Route::post('/user/{user_id}', [UserController::class, 'upgrade'])->name('user.upgrade')->middleware('auth');
 
 Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create')->middleware('auth');
 Route::post('/category/create', [CategoryController::class, 'store'])->name('category.store')->middleware('auth');

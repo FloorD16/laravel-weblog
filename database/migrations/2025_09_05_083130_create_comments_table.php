@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('body');
             $table->timestamps();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->default(1);
             $table->foreignId('post_id');
         });
     }
