@@ -4,11 +4,18 @@
 
 @section('content')
 
-    <h1>Posts</h1>
+    @if ($premium)
+        <h1>Premium posts</h1>
+    @else
+        <h1>Posts</h1>
+    @endif
     
     <h3>Filter op categorie</h3>
 
     <form action="{{ route('posts.index') }}" method="GET">
+        @if ($premium)
+            <input type="hidden" name="premium" value="1">
+        @endif
         <label for="categories">Kies categorieën:</label>
         <select id="categories" name="categories[]" multiple>
             @foreach ($categories as $category)

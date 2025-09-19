@@ -18,18 +18,21 @@ class PostController extends Controller
 
     public function index(Request $request)
     {
-        $query = Post::query();
-
+        $premium = $request->filled('premium') && $request->premium === "1";
+        
+        $query = Post::query()->where('is_premium', $premium ? 1 : 0);
+        
         if ($request->filled('categories')) {
             $query->whereHas('categories', function ($q) use ($request) {
                 $q->whereIn('categories.id', $request->categories);
             });
         }
-
+        
         $posts = $query->latest()->paginate(10)->withQueryString();
+        //dd($posts->items());
         $categories = Category::all();
 
-        return view('posts.index', compact('posts', 'categories'));
+        return view('posts.index', compact('posts', 'categories', 'premium'));
     }
 
     /**
@@ -102,11 +105,11 @@ class PostController extends Controller
         //
     }
 
-    public function premium()
+    public function premium(string $premium)
     {
         $posts = Post::where('is_premium', 1)->latest()->paginate(10);
         $categories = Category::all();
 
-        return view('posts.index', compact('posts', 'categories'));
+        return view('posts.index', compact('posts', 'categories', 'premium'));
     }
 }

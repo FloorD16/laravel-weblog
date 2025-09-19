@@ -20,7 +20,7 @@
             @endif
             @if(Auth::user()['is_premium'] === 1)
                 <li>
-                    <a href="{{ route('posts.premium') }}">Premium artikelen</a>
+                    <a href="{{ route('posts.premium', ['premium' => 1]) }}">Premium artikelen</a>
                 </li>
             @endif
             <li>

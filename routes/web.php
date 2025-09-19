@@ -15,9 +15,9 @@ Route::get('/', function () {
 
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-Route::get('/posts/premium', [PostController::class, 'premium'])->name('posts.premium')->middleware('auth');
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/posts/{premium}', [PostController::class, 'premium'])->name('posts.premium')->middleware('auth');
+Route::get('/post/{id}', [PostController::class, 'show'])->name('posts.show');
 
 Route::post('/posts/{id}', [CommentController::class, 'store'])->name('comments.store');
 
