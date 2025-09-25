@@ -17,7 +17,10 @@ Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 Route::get('/posts/{premium}', [PostController::class, 'premium'])->name('posts.premium')->middleware('auth');
-Route::get('/post/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/post/{post}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/edit/{post}', [PostController::class, 'edit'])->name('post.edit')->middleware('auth');
+Route::put('/update/{post}', [PostController::class, 'update'])->name('post.update')->middleware('auth');
+Route::delete('/destroy/{post}', [PostController::class, 'destroy'])->name('post.destroy')->middleware('auth');
 
 Route::post('/posts/{id}', [CommentController::class, 'store'])->name('comments.store');
 
@@ -30,11 +33,8 @@ Route::post('/logout', function () {
     return redirect('/posts');
 })->name('logout');
 
-Route::get('/user/{user_id}', [UserController::class, 'index'])->name('user.index')->middleware('auth');
-Route::get('/user/{user_id}/edit/{post_id}', [UserController::class, 'edit'])->name('user.edit')->middleware('auth');
-Route::put('/user/{user_id}/{post}', [UserController::class, 'update'])->name('user.update')->middleware('auth');
-Route::delete('/user/{user_id}/{post}', [UserController::class, 'destroy'])->name('user.destroy')->middleware('auth');
-Route::post('/user/{user_id}', [UserController::class, 'upgrade'])->name('user.upgrade')->middleware('auth');
+Route::get('/user', [UserController::class, 'index'])->name('user.index')->middleware('auth');
+Route::post('/user', [UserController::class, 'upgrade'])->name('user.upgrade')->middleware('auth');
 
 Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create')->middleware('auth');
 Route::post('/category/create', [CategoryController::class, 'store'])->name('category.store')->middleware('auth');

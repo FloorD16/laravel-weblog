@@ -9,13 +9,6 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    public function posts() {
-        return $this->hasMany(Post::class);
-    }
-
-    public function comments() {
-        return $this->hasMany(Comment::class);
-    }
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -53,4 +46,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
 }

@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
+    use HasFactory;
+
+    protected $fillable = ['title', 'body', 'image', 'is_premium', 'user_id'];
+
     public function categories() {
         return $this->belongsToMany(Category::class);
     }
@@ -18,8 +22,4 @@ class Post extends Model
     public function comments() {
         return $this->hasMany(Comment::class);
     }
-
-    use HasFactory;
-
-    protected $fillable = ['title', 'body', 'image', 'is_premium'];
 }

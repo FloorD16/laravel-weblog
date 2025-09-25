@@ -22,9 +22,9 @@
                     <td>{{ $post->title }}</td>
                     <td>{{ $post->body }}</td>
                     <td>{{ $post->created_at }}</td>
-                    <td><a href="{{ route('user.edit', ['user_id' => $user_id, 'post_id' => $post->id]) }}">Bewerken</a></td>
+                    <td><a href="{{ route('post.edit', ['post' => $post->id]) }}">Bewerken</a></td>
                     <td>
-                        <form action="{{ route('user.destroy', ['user_id' => $user_id, 'post' => $post->id]) }}" method="POST">
+                        <form action="{{ route('post.destroy', ['post' => $post->id]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" onclick="return confirm('Weet je zeker dat je deze post wilt verwijderen?')">Verwijderen</button>

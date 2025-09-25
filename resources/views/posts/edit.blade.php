@@ -5,7 +5,7 @@
 @section('content')
     <h1>Artikel Bewerken</h1>
 
-    <form action="{{ route('user.update', ['user_id' => $user_id, 'post' => $post->id]) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('post.update', ['post' => $post->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <label for="title">Titel:</label>

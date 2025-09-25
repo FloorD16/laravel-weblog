@@ -2,14 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdatePostRequest;
-
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
-use App\Models\Category;
 
 
 class UserController extends Controller
@@ -17,97 +12,14 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(string $user_id)
+    public function index()
     {
-        $posts = Post::where('user_id', $user_id)->get();
+        $posts = Post::where('user_id', Auth::id())->get();
         
-        return view('user.index', compact('posts', 'user_id'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show()
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $user_id, string $post_id)
-    {
-        $post = Post::find($post_id);
-        $categories = Category::All();
-
-        return view('user.edit', compact('post', 'user_id', 'categories'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePostRequest $request, string $user_id, Post $post)
-    {
-        // Valideert de inkomende gegevens
-        $validated = $request->validated();
-        
-        if ($request->hasFile('image')) {
-            // Delete the old image if it exists
-            if ($post->image) {
-                Storage::disk('public')->delete($post->image);
-            }
-
-            // Store the new image
-            $validated['image'] = $request->file('image')->store('images', 'public');
-        
-        } else {
-            // Delete the old image if no new one is uploaded
-            if ($post->image) {
-                Storage::disk('public')->delete($post->image);
-            }
-
-    $validated['image'] = null;
-}
-
-
-
-        $validated['is_premium'] = $request->has('premium') ? 1 : 0;
-
-        // Werkt het item bij met de gevalideerde gegevens
-        $post->update($validated);
-
-        $post->categories()->sync($validated['categories']);
-
-        return redirect()->route('user.index', ['user_id' => $user_id]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $user_id, Post $post)
-    {
-        $post->delete();
-        
-        return redirect()->route('user.index', ['user_id' => $user_id]);
+        return view('user.index', compact('posts'));
     }
     
-    public function upgrade(string $user_id)
+    public function upgrade()
     {
         $user = Auth::user();
         $user->is_premium = 1;
